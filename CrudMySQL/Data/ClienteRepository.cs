@@ -87,5 +87,87 @@ namespace CrudMySQL.Data
 
             return cliente;
         }
+
+        public int Add(Cliente cliente)
+        {
+            int newId = 0;
+            string query = "INSERT INTO Clientes (Nome, Email, Telefone) VALUES (@Nome, @Email, @Telefone); SELECT LAST_INSERT_ID();";
+
+            using (MySqlConnection connection = Database.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
+                        cmd.Parameters.AddWithValue("@Email", cliente.Email ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone ?? (object)DBNull.Value);
+
+                        newId = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao adicionar cliente: " + ex.Message);
+                }
+            }
+
+            return newId;
+        }
+
+        public bool Update(Cliente cliente)
+        {
+            int rowsAffected = 0;
+            string query = "UPDATE Clientes SET Nome = @Nome, Email = @Email, Telefone = @Telefone WHERE Id = @Id";
+
+            using (MySqlConnection connection = Database.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
+                        cmd.Parameters.AddWithValue("@Email", cliente.Email ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Id", cliente.Id);
+
+                        rowsAffected = cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao atualizar cliente: " + ex.Message);
+                }
+            }
+
+            return rowsAffected > 0;
+        }
+
+        public bool Delete(int id)
+        {
+            int rowsAffected = 0;
+            string query = "DELETE FROM Clientes WHERE Id = @Id";
+
+            using (MySqlConnection connection = Database.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id);
+                        rowsAffected = cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao excluir cliente: " + ex.Message);
+                }
+            }
+
+            return rowsAffected > 0;
+        }
     }
 }
