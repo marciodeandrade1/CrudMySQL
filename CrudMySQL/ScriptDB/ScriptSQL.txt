@@ -8,3 +8,6 @@ CREATE TABLE Clientes (
     Telefone VARCHAR(20),
     DataCadastro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+
+//https://www.connectionstrings.com/mysql-connector-net-mysqlconnection/
