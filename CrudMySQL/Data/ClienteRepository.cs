@@ -48,5 +48,44 @@ namespace CrudMySQL.Data
 
             return clientes;
         }
+
+        public Cliente GetById(int id)
+        {
+            Cliente cliente = null;
+            string query = "SELECT Id, Nome, Email, Telefone, DataCadastro FROM Clientes WHERE Id = @Id";
+
+            using (MySqlConnection connection = Database.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                cliente = new Cliente
+                                {
+                                    Id = reader.GetInt32("Id"),
+                                    Nome = reader.GetString("Nome"),
+                                    Email = reader.IsDBNull("Email") ? null : reader.GetString("Email"),
+                                    Telefone = reader.IsDBNull("Telefone") ? null : reader.GetString("Telefone"),
+                                    DataCadastro = reader.GetDateTime("DataCadastro")
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao obter cliente: " + ex.Message);
+                }
+            }
+
+            return cliente;
+        }
     }
 }
