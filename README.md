@@ -1,6 +1,6 @@
 # CrudMySQL
 
-Projeto base incompleto para estudo
+Projeto base incompleto para aula/estudo Curso Técnico em Informática SENAC
 
  Vantagens desta abordagem com Models
 
