@@ -1,5 +1,7 @@
 # CrudMySQL
 
+Projeto base incompleto para estudo
+
  Vantagens desta abordagem com Models
 
 1. Separação de responsabilidades:
