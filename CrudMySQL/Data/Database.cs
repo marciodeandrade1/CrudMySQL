@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
+using System;
 
 namespace CrudMySQL.Data
 {
-    internal class Database
+    public static class Database
     {
+        private static string connectionString = "Server=localhost;Database=CrudDemo;Uid=root;Pwd=suasenha;";
+
+        public static MySqlConnection GetConnection()
+        {
+            return new MySqlConnection(connectionString);
+        }
     }
 }
